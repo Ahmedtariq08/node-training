@@ -1,9 +1,7 @@
 import express, { Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { customerSchema } from '../schema/customerSchema';
+import { Customer } from '../models/customerModel';
 
 const router = express.Router();
-export const Customer = mongoose.model('Customer', customerSchema);
 
 /* Get all customers */
 router.get('/', async (req: Request, res: Response) => {

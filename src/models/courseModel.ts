@@ -22,7 +22,7 @@ const AvailableCategories = ['web', 'mobile', 'network', 'desktop'];
 //       .transform((value) => Math.round(value))
 //   });
 
-export const courseSchemaMongo = new mongoose.Schema({
+const courseSchemaMongo = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Name is required for a course'],
@@ -72,7 +72,7 @@ export const courseSchemaMongo = new mongoose.Schema({
 })
 
 
-export const courseSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -127,3 +127,5 @@ export const courseSchema = new mongoose.Schema({
         set: (v: number) => Math.round(v),
     },
 });
+
+export const Course = mongoose.model('Course', courseSchemaMongo);

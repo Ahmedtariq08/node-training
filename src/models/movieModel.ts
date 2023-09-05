@@ -2,15 +2,17 @@ import mongoose from "mongoose";
 
 export const AvailableGenres = ['Action', 'Romance', 'Drama', 'Crime', 'Thriller', 'Sci-fi', 'Horror'];
 
-export const genreSchema = new mongoose.Schema({
+const genreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Genre is required'],
         enum: AvailableGenres
     },
-})
+});
 
-export const movieSchema = new mongoose.Schema({
+export const Genre = mongoose.model('Genre', genreSchema);
+
+const movieSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -35,4 +37,6 @@ export const movieSchema = new mongoose.Schema({
         max: 255,
         default: 20
     }
-})
+});
+
+export const Movie = mongoose.model('Movie', movieSchema);

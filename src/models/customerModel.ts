@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const customerSchema = new mongoose.Schema({
+const customerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -18,3 +18,5 @@ export const customerSchema = new mongoose.Schema({
     maxlength: 50
   }
 });
+
+export const Customer = mongoose.model('Customer', customerSchema);

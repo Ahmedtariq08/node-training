@@ -1,11 +1,10 @@
-import express, { Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { rentalSchema } from '../schema/rentalSchema';
-import { Customer } from './customerRoutes';
-import { Movie } from './movieRoutes';
+import express from 'express';
+import { Customer } from '../models/customerModel';
+import { Movie } from '../models/movieModel';
+import { Rental } from '../models/rentalModel';
 
 const router = express.Router();
-const Rental = mongoose.model('Rental', rentalSchema);
+
 
 /* Get all rentals */
 router.get('/', async (req, res) => {

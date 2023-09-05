@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import { seedCourses } from '../database/seed';
-import { courseSchemaMongo } from '../schema/courseSchema';
-
-const Course = mongoose.model('Course', courseSchemaMongo);
+import { Course } from '../models/courseModel';
 
 export const seedCoursesInDb = async () => {
     await Course.deleteMany({});

@@ -1,10 +1,9 @@
 import express, { Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { genreSchema, movieSchema, AvailableGenres } from '../schema/movieSchema';
+import { AvailableGenres, Genre, Movie } from '../models/movieModel';
 
 //ANCHOR - Genres
 const genreRouter = express.Router();
-const Genre = mongoose.model('Genre', genreSchema);
+
 
 /* Seed Genres */
 genreRouter.post('/seed', async (req: Request, res: Response) => {
@@ -33,7 +32,7 @@ genreRouter.get('/', async (req: Request, res: Response) => {
 
 //ANCHOR - Movies
 const movieRouter = express.Router();
-export const Movie = mongoose.model('Movie', movieSchema);
+
 
 /* Add a movie */
 movieRouter.post('/', async (req: Request, res: Response) => {

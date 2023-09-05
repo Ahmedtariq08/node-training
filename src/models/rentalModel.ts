@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const rentalSchema = new mongoose.Schema({
+const rentalSchema = new mongoose.Schema({
     customer: {
         type: new mongoose.Schema({
             name: {
@@ -53,3 +53,5 @@ export const rentalSchema = new mongoose.Schema({
         min: 0
     }
 });
+
+export const Rental = mongoose.model('Rental', rentalSchema);
