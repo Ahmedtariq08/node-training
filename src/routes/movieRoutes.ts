@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { AvailableGenres, Genre, Movie } from '../models/movieModel';
+import { authenticate, isUserAdmin } from '../middleware/middleware';
 
 //ANCHOR - Genres
 const genreRouter = express.Router();
@@ -19,14 +20,47 @@ genreRouter.post('/seed', async (req: Request, res: Response) => {
     }
 });
 
-/* Get all genres */
-genreRouter.get('/', async (req: Request, res: Response) => {
+/* Create new genre */
+genreRouter.post('/', authenticate, async (req: Request, res: Response) => {
     try {
-        const genres = await Genre.find({}).select('name');
-        // const mappedNames = genres.map(obj => obj.name);
+        const name = req.body.name;
+        if (!name) {
+            return res.status(400).send('Genre must have a name');
+        }
+
+        const genreExists = await Genre.findOne({ name: name });
+        if (genreExists) {
+            return res.status(400).send('Genre already exists by this name');
+        }
+        let genre = new Genre({ name: req.body.name });
+        genre = await genre.save();
+        return res.send(genre);
+    } catch (error) {
+        return res.status(400).send(error.message);
+    }
+});
+
+/* Get all genres */
+genreRouter.get('/', authenticate, async (req: Request, res: Response) => {
+    try {
+        const genres = await Genre.find({});
         res.send(genres);
     } catch (error) {
         return res.status(500).send('Error in fetching genres');
+    }
+});
+
+/* Delete genre */
+genreRouter.delete('/:id', [authenticate, isUserAdmin], async (req: Request, res: Response) => {
+    try {
+        const genreId = req.params.id;
+        const genre = await Genre.findByIdAndRemove(genreId);
+        if (!genre) {
+            return res.status(404).send('Genre by given Id was not found');
+        }
+        return res.send(genre);
+    } catch (error) {
+        return res.status(400).send(error.message);
     }
 });
 

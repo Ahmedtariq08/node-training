@@ -6,7 +6,7 @@ const genreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Genre is required'],
-        enum: AvailableGenres
+        minlength: [3, 'Genre must have at least 3 characters']
     },
 });
 

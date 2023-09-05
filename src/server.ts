@@ -27,6 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(helmet());
+
+//Custom Middleware
+// app.use(log);
+// app.use(authenticate);
+
+//Routes
 app.use('/api/courses', coursesRouter);
 app.use('/api/genres', genreRouter);
 app.use('/api/movies', movieRouter);
@@ -42,9 +48,7 @@ if (mode === 'dev') {
 dbDebugger("Connected to the database");
 
 
-//Custom Middleware
-app.use(log);
-app.use(authenticate);
+
 
 //Home response
 app.get('/', (req: Request, res: Response) => {

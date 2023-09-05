@@ -1,9 +1,25 @@
-import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { Model, Schema, model } from "mongoose";
 import { z } from "zod";
 
 const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-export const User = mongoose.model('User', new mongoose.Schema({
+interface IUser {
+    name: string,
+    email: string,
+    password: string,
+    isAdmin: boolean
+}
+
+// Put all user instance methods in this interface:
+interface IUserMethods {
+    generateAuthToken(): string
+}
+
+// Create a new Model type that knows about IUserMethods...
+export type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel, IUserMethods>({
     name: {
         type: String,
         required: [true, 'Name is required'],
@@ -12,7 +28,7 @@ export const User = mongoose.model('User', new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: [true, 'A user already exists with this email'],
+        unique: true,
         required: [true, 'Email is required'],
         validate: {
             validator: function (v: string) {
@@ -25,9 +41,23 @@ export const User = mongoose.model('User', new mongoose.Schema({
         type: String,
         required: [true, 'Password is required'],
         minlength: [8, 'Password must have at least 8 characters'],
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
-}));
+});
 
+userSchema.method('generateAuthToken', function () {
+    const token: string = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, process.env.JWT_SECRET_KEY);
+    return token;
+})
+
+export const User = model<IUser, UserModel>('User', userSchema);
+
+
+
+//ANCHOR - Zod validations
 const userSchema_zod = z.object({
     name: z.string({ required_error: 'Name is required' })
         .min(3, 'Name must have at least three characters')
@@ -38,7 +68,9 @@ const userSchema_zod = z.object({
         .email('Please enter a valid email'),
     password: z.string({ required_error: 'Password is required' })
         .nonempty()
-        .min(8, 'Password must have at least 8 characters')
+        .min(8, 'Password must have at least 8 characters'),
+    isAdmin: z.boolean()
+        .default(false)
 });
 
 const newUserSchema_zod = z.object({
@@ -47,7 +79,9 @@ const newUserSchema_zod = z.object({
         .email('Please enter a valid email'),
     password: z.string({ required_error: 'Password is required' })
         .nonempty()
-        .min(8, 'Password must have at least 8 characters')
+        .min(8, 'Password must have at least 8 characters'),
+    isAdmin: z.boolean()
+        .default(false)
 });
 
 type ZodWrapper = {
