@@ -5,7 +5,7 @@ import morgan from 'morgan';
 import Debug from 'debug';
 import coursesRouter from './routes/courseRoute';
 import customerRouter from './routes/customerRoutes';
-import userRouter from './routes/userRoutes';
+import authRouter from './routes/authRoutes';
 import { genreRouter, movieRouter } from './routes/movieRoutes';
 import { authenticate, log } from './middleware/middleware';
 import { connectToDb } from './database/mongo';
@@ -31,7 +31,7 @@ app.use('/api/courses', coursesRouter);
 app.use('/api/genres', genreRouter);
 app.use('/api/movies', movieRouter);
 app.use('/api/customer', customerRouter);
-app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 if (mode === 'dev') {
     app.use(morgan('tiny'));

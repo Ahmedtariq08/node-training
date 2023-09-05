@@ -41,19 +41,37 @@ const userSchema_zod = z.object({
         .min(8, 'Password must have at least 8 characters')
 });
 
+const newUserSchema_zod = z.object({
+    email: z.string({ required_error: 'Email is required' })
+        .nonempty()
+        .email('Please enter a valid email'),
+    password: z.string({ required_error: 'Password is required' })
+        .nonempty()
+        .min(8, 'Password must have at least 8 characters')
+});
+
 type ZodWrapper = {
     data?: any,
     error?: string[]
 }
-export const validateUserData = (data: unknown): ZodWrapper => {
+
+const validateSchema = (schema: z.AnyZodObject, data: unknown): ZodWrapper => {
     let messages: string[] | undefined = undefined;
     let result = undefined;
     try {
-        result = userSchema_zod.parse(data);
+        result = schema.parse(data);
     } catch (error) {
         if (error instanceof z.ZodError) {
             messages = error.issues.map(issue => issue.message);
         }
     }
     return { data: result, error: messages };
+}
+
+export const validateUserData = (data: unknown): ZodWrapper => {
+    return validateSchema(userSchema_zod, data);
+}
+
+export const validateNewUserData = (data: unknown): ZodWrapper => {
+    return validateSchema(newUserSchema_zod, data);
 }
