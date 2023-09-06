@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { seedCourses } from '../database/seed';
+import { seedCourses } from '../startup/seed';
 import { Course } from '../models/courseModel';
 
 export const seedCoursesInDb = async () => {

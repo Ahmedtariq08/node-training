@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import _ from 'lodash';
 import { User, validateNewUserData, validateUserData } from '../models/userModel';
 import { authenticate } from "../middleware/middleware";
+import { logger } from "../config/logger";
 
 const router = express.Router();
 
@@ -56,7 +57,6 @@ router.get('/me', authenticate, async (req: Request, res: Response) => {
 
 /* Login user*/
 router.post('/login', async (req: Request, res: Response) => {
-
     try {
         const result = validateNewUserData(req.body);
         if (result.error) {
@@ -73,8 +73,14 @@ router.post('/login', async (req: Request, res: Response) => {
         }
 
         const token = existingUser.generateAuthToken();
-        return token ? res.send(token) : res.status(500).send('Internal Server Error');
+        if (token) {
+            logger.info(`Logged in successfully with user: ${existingUser.name}`);
+            return res.send(token);
+        } else {
+            return res.status(500).send('Internal Server Error');
+        }
     } catch (error) {
+        logger.error(`Unable to login with the user ${req.body.name}`)
         return res.status(400).send(error.message);
     }
 });

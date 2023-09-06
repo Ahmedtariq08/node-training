@@ -5,6 +5,7 @@ export const log = (req: Request, res: Response, next: NextFunction) => {
     next();
 }
 
+/* Auth middleware */
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('x-auth-token');
     if (!token) {
@@ -25,3 +26,23 @@ export const isUserAdmin = (req: Request, res: Response, next: NextFunction) => 
     }
     next();
 }
+
+/* Excetion handling middleware */
+export const error = (err: Error, req: Request, res: Response, next: NextFunction) => {
+    //log exception
+    console.log(req);
+    return res.status(500).send('Internal Server Error');
+}
+
+/* Async middleware */
+export const asyncMiddleware = (handler: (req: Request, res: Response) => void) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await handler(req, res);
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+
+
