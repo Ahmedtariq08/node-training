@@ -1,9 +1,9 @@
 import winston from 'winston';
 const { createLogger, format } = winston;
-const { combine, splat, timestamp, printf } = format;
+const { combine, timestamp, printf } = format;
 
 const myFormat = printf(({ level, label, message, timestamp, ...metadata }) => {
-    let msg = `${timestamp} [${level.toUpperCase()}] : ${message} `
+    const msg = `${timestamp} [${level.toUpperCase()}] : ${message} `
     metadata && msg.concat(JSON.stringify(metadata));
     return msg;
 });
@@ -27,14 +27,14 @@ if (process.env.NODE_ENV === 'dev') {
     }));
 }
 
-//Works for synchronous code
+// Works for synchronous code
 process.on('uncaughtException', (ex) => {
     logger.error(`Uncaught exception: ${ex.message}`, ex);
     process.exit(1);
 })
 
 
-//For async code
+// For async code
 process.on('unhandledRejection', (ex) => {
     logger.error(`Unhandled rejection`, ex);
     process.exit(1);

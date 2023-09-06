@@ -71,14 +71,14 @@ export const exercise73 = async () => {
 }
 
 const getCourses = async () => {
-    //SECTION - comparison operators
-    //eq = equal, ne = not equal, gt = greater than, lt = less than
-    //lte = less than or equal to, in, nin (not in)
+    // SECTION - comparison operators
+    // eq = equal, ne = not equal, gt = greater than, lt = less than
+    // lte = less than or equal to, in, nin (not in)
 
-    //SECTION - logical operators
+    // SECTION - logical operators
     // or, and
 
-    //SECTION - Pagination
+    // SECTION - Pagination
     const pageNumber = 2;
     const pageSize = 10;
 
@@ -91,28 +91,28 @@ const getCourses = async () => {
             // .find()
             // .or([ {author: 'Ahmed Tariq'}, { isPublished: true}])
 
-            //starts with ahmed
+            // starts with ahmed
             .find({ author: /^Ahmed/i })
 
-            //ends with tariq (i for case insensitive)
+            // ends with tariq (i for case insensitive)
             .find({ author: /Tariq$/i })
 
-            //contains ahmed
+            // contains ahmed
             .find({ author: /.*Ahmed.*/ })
 
-            //pagination
+            // pagination
             .skip(pageNumber - 1 * pageSize)
 
             .limit(pageSize)
             .sort({ name: 1 })
 
-            //only return count of objects that match query (remove select)
+            // only return count of objects that match query (remove select)
             .count()
 
             // sends results by filtering
             .select({ name: 1, tags: 1 });
-        console.log(result);
+
     } catch (error) {
-        console.error('Error in getting courses', error);
+
     }
 }

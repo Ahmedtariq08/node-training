@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { AvailableGenres, Genre, Movie } from '../models/movieModel';
 import { asyncMiddleware, authenticate, isUserAdmin } from '../middleware/middleware';
 
-//ANCHOR - Genres
+// ANCHOR - Genres
 const genreRouter = express.Router();
 
 
@@ -28,7 +28,7 @@ genreRouter.post('/', authenticate, async (req: Request, res: Response) => {
             return res.status(400).send('Genre must have a name');
         }
 
-        const genreExists = await Genre.findOne({ name: name });
+        const genreExists = await Genre.findOne({ name });
         if (genreExists) {
             return res.status(400).send('Genre already exists by this name');
         }
@@ -41,7 +41,7 @@ genreRouter.post('/', authenticate, async (req: Request, res: Response) => {
 });
 
 /* Get all genres */
-//we can remove call of async middleware after using express-async-errors
+// we can remove call of async middleware after using express-async-errors
 genreRouter.get('/', authenticate, asyncMiddleware(async (req: Request, res: Response) => {
     const genres = await Genre.find({});
     res.send(genres);
@@ -67,7 +67,7 @@ genreRouter.delete('/:id', [authenticate, isUserAdmin], async (req: Request, res
     }
 });
 
-//ANCHOR - Movies
+// ANCHOR - Movies
 const movieRouter = express.Router();
 
 

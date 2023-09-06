@@ -29,8 +29,6 @@ export const isUserAdmin = (req: Request, res: Response, next: NextFunction) => 
 
 /* Excetion handling middleware */
 export const error = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    //log exception
-    console.log(req);
     return res.status(500).send('Internal Server Error');
 }
 

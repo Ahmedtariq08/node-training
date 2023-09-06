@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import { error } from '../middleware/middleware';
 
 export const loadBuiltInMiddleware = (app: Express) => {
-    //Built in middleware
+    // Built in middleware
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.static('public'));
@@ -11,7 +11,7 @@ export const loadBuiltInMiddleware = (app: Express) => {
 }
 
 export const loadCustomMiddleware = (app: Express) => {
-    //Custom middleware
+    // Custom middleware
     app.use(error)
 }
 

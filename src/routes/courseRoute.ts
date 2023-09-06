@@ -4,7 +4,7 @@ import { getAllCourses, seedCoursesInDb, deleteAllCourses, getCourse, addCourse,
 
 const router = express.Router();
 
-//ANCHOR - REST CRUD
+// ANCHOR - REST CRUD
 
 /* Seed Database */
 router.post('/seed', async (req: Request, res: Response) => {
@@ -89,7 +89,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
 });
 
 
-//ANCHOR - Courses
+// ANCHOR - Courses
 interface Course {
     id: number,
     name: string
@@ -120,7 +120,7 @@ router.put('/:id', (req: Request, res: Response) => {
         return res.status(404).send(`Course with id: ${req.params.id} not found`);
     }
     const name = req.body.name;
-    let error = validateCourse({ name: name });
+    const error = validateCourse({ name });
     if (error) {
         return res.status(400).send(error);
     } else {
@@ -140,7 +140,7 @@ router.delete('/:id', (req: Request, res: Response) => {
 })
 
 /**
- * @param course 
+ * @param course
  * @returns string of error message, or undefined if no errors found;
  */
 const validateCourse = (course: Partial<Course>): string | undefined => {

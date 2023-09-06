@@ -31,7 +31,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
         unique: true,
         required: [true, 'Email is required'],
         validate: {
-            validator: function (v: string) {
+            validator (v: string) {
                 return emailRegex.test(v);
             },
             message: "Please enter a valid email"
@@ -57,7 +57,7 @@ export const User = model<IUser, UserModel>('User', userSchema);
 
 
 
-//ANCHOR - Zod validations
+// ANCHOR - Zod validations
 const userSchema_zod = z.object({
     name: z.string({ required_error: 'Name is required' })
         .min(3, 'Name must have at least three characters')

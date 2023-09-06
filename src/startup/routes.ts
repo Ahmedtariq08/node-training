@@ -12,7 +12,7 @@ export const loadRoutes = (app: Express) => {
     app.use('/api/customer', customerRouter);
     app.use('/api/auth', authRouter);
 
-    //Home response
+    // Home response
     app.get('/', (req: Request, res: Response) => {
         return res.send('Welcome to Vidly application by Ahmed Tariq');
     });

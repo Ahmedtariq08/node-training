@@ -49,7 +49,7 @@ const courseSchemaMongo = new mongoose.Schema({
     tags: {
         type: Array,
         validate: {
-            validator: function (value: string[]) {
+            validator (value: string[]) {
                 return value && value.length > 0;
             },
             message: 'A course should have at least one tag'
@@ -83,23 +83,23 @@ const courseSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        lowercase: true,    //mongoose will convert the string to lowercase
+        lowercase: true,    // mongoose will convert the string to lowercase
         // uppercase: true,
-        trim: true, //removes padding around strings
-        enum: ['web', 'mobile', 'network']  //category must be either of values in enum
+        trim: true, // removes padding around strings
+        enum: ['web', 'mobile', 'network']  // category must be either of values in enum
     },
     author: String,
-    //Synchronous
+    // Synchronous
     tags: {
         type: Array,
-        validate: { //custom validator
-            validator: function (value: string[]) {
+        validate: { // custom validator
+            validator (value: string[]) {
                 return value && value.length > 0;
             },
             message: 'A course should have at least one tag'
         }
     },
-    //asynchronous
+    // asynchronous
     // tags: {
     //     type: Array,
     //     validate: { //custom validator
@@ -118,12 +118,12 @@ const courseSchema = new mongoose.Schema({
     isPublished: Boolean,
     price: {
         type: Number,
-        required: function () {
+        required () {
             return this.isPublished;
         },
         min: 10,
         max: 200,
-        get: (v: number) => Math.round(v),  //can implement certain operations to set and get values
+        get: (v: number) => Math.round(v),  // can implement certain operations to set and get values
         set: (v: number) => Math.round(v),
     },
 });
