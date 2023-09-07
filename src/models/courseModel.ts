@@ -1,28 +1,21 @@
-import mongoose from "mongoose";
-import { z } from "zod";
+import { Model, Schema, model } from "mongoose";
 
 const AvailableCategories = ['web', 'mobile', 'network', 'desktop'];
 
-// export const courseSchemaZod = z.object({
-//     name: z.string().min(3).max(50).nonempty(),
-//     category: z.string().nonempty().min(1).transform((str) => str.toLowerCase().trim()), // Lowercase and trim
-//     author: z.string().nonempty(),
-//     createdAt: z.date().default(() => new Date()),
-//     updatedAt: z.date().default(() => new Date()),
-//     tags: z.array(z.string()).min(1).refine(validateTags, {
-//       message: 'A course should have at least one tag',
-//     }),
-//     isPublished: z.boolean().,
-//     price: z.number()
-//       .min(10)
-//       .max(200)
-//       .refine((value, data) => data.isPublished ? true : value === undefined, {
-//         message: 'Price is required for published courses',
-//       })
-//       .transform((value) => Math.round(value))
-//   });
+export interface ICourse {
+    name: string,
+    category: string,
+    author: string,
+    isPublished: boolean,
+    price: number,
+    tags?: unknown,
+    createdAt?: Date,
+    updatedAt?: Date,
+}
 
-const courseSchemaMongo = new mongoose.Schema({
+export type CourseModel = Model<ICourse, {}>;
+
+export const courseSchema = new Schema<ICourse, CourseModel>({
     name: {
         type: String,
         required: [true, 'Name is required for a course'],
@@ -71,4 +64,4 @@ const courseSchemaMongo = new mongoose.Schema({
     }
 })
 
-export const Course = mongoose.model('Course', courseSchemaMongo);
+export const Course = model<ICourse, CourseModel>('Course', courseSchema);

@@ -1,6 +1,14 @@
-import mongoose from "mongoose";
+import { Schema, model, Model } from "mongoose";
 
-const customerSchema = new mongoose.Schema({
+export interface ICustomer {
+  name: string,
+  isGold: boolean,
+  phone: string
+}
+
+export type CustomerModel = Model<ICustomer, {}>
+
+const customerSchema = new Schema<ICustomer, CustomerModel>({
   name: {
     type: String,
     required: true,
@@ -19,4 +27,4 @@ const customerSchema = new mongoose.Schema({
   }
 });
 
-export const Customer = mongoose.model('Customer', customerSchema);
+export const Customer = model<ICustomer, CustomerModel>('Customer', customerSchema);

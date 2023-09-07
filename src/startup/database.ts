@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 import { logger } from '../config/logger';
 
 export const connectToDb = async () => {
-    const { MONGO: host, DATABASE: database } = process.env;
+    const { NODE_ENV: env, DB_DEV: devDb, DB_TEST: testDb } = process.env;
     try {
-        const res = await mongoose.connect(`${host}${database}`);
-        const db = res.connection.db.databaseName;
-        logger.info(`Connected successfully to ${db}`);
+        const database = env === 'dev' ? devDb : testDb;
+        await mongoose.connect(database);
+        logger.info(`Connected successfully to ${database}`);
     } catch (error) {
         logger.error('Error in connecting to the database', error);
     }

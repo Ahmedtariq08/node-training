@@ -28,7 +28,7 @@ router.delete('/deleteAll', async (req: Request, res: Response) => {
 });
 
 /* Get all courses */
-router.get('/', authenticate, async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     const courses = await Course.find().sort({ updatedAt: -1 });
     return res.send(courses);
 });

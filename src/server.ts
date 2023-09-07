@@ -16,6 +16,8 @@ loadBuiltInMiddleware(app);
 loadRoutes(app);
 loadCustomMiddleware(app);
 
-app.listen(port, () => {
+export const server = app.listen(port, () => {
     logger.info(`⚡️[server]: Server is running at http://localhost:${port}`);
+}).on('error', () => {
+    logger.error(`Server failed to start at http://localhost:${port}`);
 });
