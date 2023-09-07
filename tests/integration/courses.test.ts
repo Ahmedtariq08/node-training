@@ -1,9 +1,8 @@
 import request from 'supertest';
-import { server } from '../../src/server';
-import { connectToDb, disconnectFromDb } from '../database/db';
-import { seedCourses } from '../database/seeds/courses';
 import { Course, ICourse } from '../../src/models/courseModel';
 import { User } from '../../src/models/userModel';
+import { server } from '../../src/server';
+import { connectToDb, disconnectFromDb } from '../database/db';
 
 const courseRoute = '/api/courses';
 const authHeader = 'x-auth-token';
