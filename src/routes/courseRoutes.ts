@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import { Course } from '../models/courseModel';
 import { seedCourses } from '../startup/seed';
-import { authenticate } from '../middleware/middleware';
+import { authenticate, validateObjectId } from '../middleware/middleware';
 import { BadRequest } from '../config/error';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -34,9 +35,9 @@ router.get('/', async (req: Request, res: Response) => {
 });
 
 /* Get course by id */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', validateObjectId, async (req: Request, res: Response) => {
     const courseId = req.params.id;
-    const course = await Course.findById(courseId); //throws an exception if id not found
+    const course = await Course.findById(courseId);
     return res.send(course);
 });
 
@@ -62,7 +63,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 /* Add a new course */
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authenticate, async (req: Request, res: Response) => {
     try {
         const course = req.body;
         const courseToAdd = new Course({

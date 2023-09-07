@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { AppResponse, InternalServerError, GenericResponse } from "../config/error";
 import { logger } from "../config/logger";
+import mongoose from "mongoose";
 
 /* Auth middleware */
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
@@ -21,6 +22,13 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 export const isUserAdmin = (req: Request, res: Response, next: NextFunction) => {
     if (!req.user.isAdmin) {
         return res.status(403).send('Access denied');
+    }
+    next();
+}
+
+export const validateObjectId = (req: Request, res: Response, next: NextFunction) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(404).send('Invalid ID.');
     }
     next();
 }
