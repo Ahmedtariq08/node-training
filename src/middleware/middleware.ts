@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
-export const log = (req: Request, res: Response, next: NextFunction) => {
-    next();
-}
+import { AppResponse, InternalServerError, GenericResponse } from "../config/error";
+import { logger } from "../config/logger";
 
 /* Auth middleware */
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
@@ -29,10 +27,16 @@ export const isUserAdmin = (req: Request, res: Response, next: NextFunction) => 
 
 /* Excetion handling middleware */
 export const error = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    return res.status(500).send('Internal Server Error');
+    if (err instanceof AppResponse) {
+        logger.error(err.message);
+        return res.status(err.statusCode).send(err.message);
+    }
+    const { statusCode, ...response } = new InternalServerError(err.message);
+    return res.status(statusCode).send(response.message);
 }
 
 /* Async middleware */
+//this already wraps route functions into this block and passes control to next on error
 export const asyncMiddleware = (handler: (req: Request, res: Response) => void) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {

@@ -49,7 +49,7 @@ const courseSchemaMongo = new mongoose.Schema({
     tags: {
         type: Array,
         validate: {
-            validator (value: string[]) {
+            validator(value: string[]) {
                 return value && value.length > 0;
             },
             message: 'A course should have at least one tag'
@@ -70,62 +70,5 @@ const courseSchemaMongo = new mongoose.Schema({
         set: (v: number) => Math.round(v),
     }
 })
-
-
-const courseSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 255
-        // match: /pattern/
-    },
-    category: {
-        type: String,
-        required: true,
-        lowercase: true,    // mongoose will convert the string to lowercase
-        // uppercase: true,
-        trim: true, // removes padding around strings
-        enum: ['web', 'mobile', 'network']  // category must be either of values in enum
-    },
-    author: String,
-    // Synchronous
-    tags: {
-        type: Array,
-        validate: { // custom validator
-            validator (value: string[]) {
-                return value && value.length > 0;
-            },
-            message: 'A course should have at least one tag'
-        }
-    },
-    // asynchronous
-    // tags: {
-    //     type: Array,
-    //     validate: { //custom validator
-    //         isAsync: true,
-    //         validator: function (value: string[], callback: (res: boolean) => void) {
-    //             //do some async work
-    //             setTimeout(() => {
-    //                 const result = value && value.length > 0;
-    //                 callback(result);
-    //             }, 4000);
-    //         },
-    //         message: 'A course should have at least one tag'
-    //     }
-    // },
-    date: Date,
-    isPublished: Boolean,
-    price: {
-        type: Number,
-        required () {
-            return this.isPublished;
-        },
-        min: 10,
-        max: 200,
-        get: (v: number) => Math.round(v),  // can implement certain operations to set and get values
-        set: (v: number) => Math.round(v),
-    },
-});
 
 export const Course = mongoose.model('Course', courseSchemaMongo);

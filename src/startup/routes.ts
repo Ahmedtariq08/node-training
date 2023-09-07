@@ -1,8 +1,9 @@
 import express, { Express, Request, Response } from 'express';
 import authRouter from '../routes/authRoutes';
-import coursesRouter from '../routes/courseRoute';
+import coursesRouter from '../routes/courseRoutes';
 import customerRouter from '../routes/customerRoutes';
-import { genreRouter, movieRouter } from '../routes/movieRoutes';
+import genreRouter from '../routes/genreRoutes';
+import movieRouter from '../routes/movieRoutes';
 
 export const loadRoutes = (app: Express) => {
     app.use(express.json());

@@ -1,16 +1,6 @@
 import mongoose from "mongoose";
+import { genreSchema } from "./genreModel";
 
-export const AvailableGenres = ['Action', 'Romance', 'Drama', 'Crime', 'Thriller', 'Sci-fi', 'Horror'];
-
-const genreSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Genre is required'],
-        minlength: [3, 'Genre must have at least 3 characters']
-    },
-});
-
-export const Genre = mongoose.model('Genre', genreSchema);
 
 const movieSchema = new mongoose.Schema({
     title: {
